@@ -58,11 +58,15 @@ class _NewExpenceState extends State<NewExpense> {
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text("Invalid Input"),
-          content: const Text("Please check the inputs"),
+          content: const Text(
+            "Please check the tilte, amount, date and category type are valid.",
+          ),
           actions: [
             TextButton(
-              onPressed: () {},
-              child: const Text('Okey'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Okay'),
             ),
           ],
         ),
