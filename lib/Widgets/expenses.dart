@@ -1,7 +1,9 @@
+import 'package:expence_tracker/Widgets/newExpense.dart';
+import 'package:flutter/material.dart';
+
 import 'package:expence_tracker/Models/expense.dart';
 import 'package:expence_tracker/Widgets/Expenses_list/expenses_list.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:expence_tracker/Widgets/newExpence.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -11,7 +13,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpencesState extends State<Expenses> {
-  final List<Expense> expenceData = [
+  final List<Expense> expenseData = [
     Expense(
       text: 'Movie ticket',
       price: 150,
@@ -32,15 +34,52 @@ class _ExpencesState extends State<Expenses> {
     ),
   ];
 
+  void openBottamSheetOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => NewExpense(addNewExpense: onAddExpense),
+    );
+  }
+
+  void onAddExpense(Expense expense) {
+    setState(() {
+      expenseData.add(expense);
+    });
+  }
+
+  void removeExpense(Expense expense) {
+    setState(() {
+      expenseData.remove(expense);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Chart'),
-        Expanded(
-          child: ExpencesList(expenceData),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber.shade200,
+        title: const Text(
+          'Expense Tracker',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
-      ],
+        actions: [
+          IconButton(
+            onPressed: openBottamSheetOverlay,
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          const Text('Chart'),
+          Expanded(
+            child: ExpencesList(
+              expenseData,
+              removeExpense: removeExpense,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
