@@ -30,10 +30,11 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.all(5),
-      height: 180,
+      height: width <= 600 ? 180 : double.infinity,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(

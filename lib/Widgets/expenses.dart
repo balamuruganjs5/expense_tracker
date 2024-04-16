@@ -73,6 +73,21 @@ class _ExpencesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    Widget contentWidget;
+
+    if (expenseData.isNotEmpty) {
+      contentWidget = ExpencesList(
+        expenseData,
+        removeExpense: removeExpense,
+      );
+    } else {
+      contentWidget = const Center(
+        child: Text('You have zero expenses!'),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber.shade200,
@@ -87,17 +102,25 @@ class _ExpencesState extends State<Expenses> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: expenseData),
-          Expanded(
-            child: ExpencesList(
-              expenseData,
-              removeExpense: removeExpense,
+      body: width >= 600
+          ? Row(
+              children: [
+                Expanded(child: Chart(expenses: expenseData)),
+                Expanded(
+                  child: contentWidget,
+                ),
+              ],
+            )
+          : Expanded(
+              child: Column(
+                children: [
+                  Chart(expenses: expenseData),
+                  Expanded(
+                    child: contentWidget,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }
